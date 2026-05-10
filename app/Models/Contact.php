@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Contact extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'category_id',
         'first_name',
@@ -18,6 +19,10 @@ class Contact extends Model
         'address',
         'building',
         'detail',
+    ];
+
+    protected $casts = [
+        'created_at' => 'datetime',
     ];
 
     public function category()
