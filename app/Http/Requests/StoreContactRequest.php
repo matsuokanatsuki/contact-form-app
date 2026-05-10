@@ -6,9 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StoreContactRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
@@ -28,6 +25,23 @@ class StoreContactRequest extends FormRequest
         'detail' => ['required','string','max:120'],
         'tag_ids' => ['nullable','array'],
         'tag_ids.*' => ['integer','exists:tags,id'],
+        ];
+    }
+
+        public function messages(): array
+    {
+        return [
+            'first_name.required' => '姓を入力してください',
+            'last_name.required' => '名を入力してください',
+            'gender.required' => '性別を選択してください',
+            'email.required' => 'メールアドレスを入力してください',
+            'email.email' => 'メールアドレスはメール形式で入力してください',
+            'tel.required' => '電話番号を入力してください',
+            'tel.regex' => '電話番号は10桁または11桁の数字で入力してください',
+            'address.required' => '住所を入力してください',
+            'category_id.required' => 'お問い合わせの種類を選択してください',
+            'detail.required' => 'お問い合わせ内容を入力してください',
+            'detail.max' => 'お問い合わせ内容は120文字以内で入力してください',
         ];
     }
 }
