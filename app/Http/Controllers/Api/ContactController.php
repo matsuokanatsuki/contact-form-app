@@ -29,7 +29,9 @@ class ContactController extends Controller
 
         $contact->load(['category', 'tags']);
 
-        return new ContactResource($contact);
+        return (new ContactResource($contact))
+            ->response()
+            ->setStatusCode(201);
     }
 
     public function show(Contact $contact)
@@ -51,15 +53,15 @@ class ContactController extends Controller
 
         $contact->load(['category', 'tags']);
 
-        return new ContactResource($contact);
+        return (new ContactResource($contact))
+            ->response()
+            ->setStatusCode(200);
     }
 
     public function destroy(Contact $contact)
     {
         $contact->delete();
 
-        return response()->json([
-            'message' => 'Contact deleted successfully',
-        ]);
+        return response()->json(null, 204);
     }
 }

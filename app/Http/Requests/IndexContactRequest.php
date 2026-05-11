@@ -21,5 +21,11 @@ class IndexContactRequest extends FormRequest
             'created_at' => ['nullable', 'date'],
         ];
     }
-    
-}
+
+        public function messages(): array
+    {
+        return [
+            'gender.in' => '性別の値が不正です',
+            'category_id.exists' => '選択されたカテゴリーが存在しません',
+        ];
+    }
