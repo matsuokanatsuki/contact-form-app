@@ -5,14 +5,52 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\StoreContactRequest;
 use App\Http\Requests\Api\UpdateContactRequest;
+use App\Http\Requests\Api\IndexContactRequest;
 use App\Http\Resources\ContactResource;
 use App\Models\Contact;
 
 class ContactController extends Controller
 {
-    public function index()
+    public function index(IndexContactRequest $request)
     {
-        $contacts = Contact::with(['category', 'tags'])->get();
+        $query = Contact::with(['category', 'tags']);
+
+        if ($request->filled('keyword')) {
+            $keyword = $request->keyword;
+
+            $query->where(function ($q) use ($keyword) {
+                $q->where('first_name', 'like', "%{$keyword}%")
+                    ->orWhere('last_name', 'like', "%{$keyword}%")
+                    ->orWhereRaw(
+                        "CONCAT(first_name, last_name) LIKE ?",
+                        ["%{$keyword}%"]
+                    )
+                    ->orWhereRaw(
+                        "CONCAT(last_name, first_name) LIKE ?",
+                        ["%{$keyword}%"]
+                    )
+                    ->orWhere('email', 'like', "%{$keyword}%");
+            });
+        }
+
+        if ($request->filled('gender')) {
+            $query->where('gender', $request->gender);
+        }
+
+        if ($request->filled('category_id')) {
+            $query->where('category_id', $request->category_id);
+        }
+
+        if ($request->filled('date')) {
+            $query->whereDate('created_at', $request->date);
+        }
+
+        $perPage = $request->input('per_page', 20);
+
+        $contacts = $query
+            ->latest()
+            ->paginate($perPage)
+            ->appends($request->query());
 
         return ContactResource::collection($contacts);
     }
