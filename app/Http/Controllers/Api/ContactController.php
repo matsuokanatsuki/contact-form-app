@@ -13,8 +13,8 @@ class ContactController extends Controller
 {
     public function index(IndexContactRequest $request)
     {
-        $query = Contact::with(['category', 'tags']);
-            ->filter($request->validated())
+        $query = Contact::with(['category', 'tags'])
+            ->filter($request->validated());
 
         $perPage = $request->input('per_page', 20);
 
@@ -63,8 +63,7 @@ class ContactController extends Controller
         $contact->load(['category', 'tags']);
 
         return (new ContactResource($contact))
-            ->response()
-            ->setStatusCode(200);
+            ->response();
     }
 
     public function destroy(Contact $contact)
