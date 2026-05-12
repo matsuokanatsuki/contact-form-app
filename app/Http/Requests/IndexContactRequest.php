@@ -29,3 +29,4 @@ class IndexContactRequest extends FormRequest
             'category_id.exists' => '選択されたカテゴリーが存在しません',
         ];
     }
+}

@@ -58,42 +58,8 @@ class ContactController extends Controller
 
     public function export(ExportContactRequest $request)
     {
-        $query = Contact::query()
-            ->with(['category']);
-
-        // keyword
-        if ($request->filled('keyword')) {
-            $keyword = $request->keyword;
-
-            $query->where(function ($q) use ($keyword) {
-                $q->where('first_name', 'like', "%{$keyword}%")
-                    ->orWhere('last_name', 'like', "%{$keyword}%")
-                    ->orWhereRaw(
-                        "CONCAT(first_name, last_name) LIKE ?",
-                        ["%{$keyword}%"]
-                    )
-                    ->orWhereRaw(
-                        "CONCAT(last_name, first_name) LIKE ?",
-                        ["%{$keyword}%"]
-                    )
-                    ->orWhere('email', 'like', "%{$keyword}%");
-            });
-        }
-
-        // gender
-        if ($request->filled('gender') && $request->gender !== '0') {
-            $query->where('gender', $request->gender);
-        }
-
-        // category
-        if ($request->filled('category_id')) {
-            $query->where('category_id', $request->category_id);
-        }
-
-        // date
-        if ($request->filled('date')) {
-            $query->whereDate('created_at', $request->date);
-        }
+        $query = Contact::with(['category', 'tags'])
+            ->filter($request->validated());
 
         $contacts = $query->latest()->get();
 
