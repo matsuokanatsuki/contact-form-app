@@ -5,6 +5,18 @@
 本システムは、一般ユーザーが利用する公開のお問い合わせフォームです。<br>
 誰でもお問い合わせを送信でき、管理者はログイン後にその内容を確認・管理します。
 
+### 主な機能
+- 公開お問い合わせフォーム
+- 確認画面 / サンクス画面
+- 管理者ログイン / ユーザー登録
+- お問い合わせ一覧表示
+- 検索機能（複数条件AND検索）
+- お問い合わせ詳細表示
+- お問い合わせ削除
+- タグCRUD
+- CSVエクスポート
+- お問い合わせAPI（CRUD）
+
 ## ER図
 以下はデータベース構成のロジックモデル図です。<br><br>
 ![image\ContactForm_ER.png が見つかりません](image\ContactForm_ER.png)
@@ -197,6 +209,26 @@ DELETE | /api/v1/contacts/{contact} | お問い合わせ削除 |
 
 ## 開発環境URL
 http://localhost:8080/
+
+## URL
+一般公開画面:
+http://localhost/
+
+管理画面:
+http://localhost/admin
+
+ログイン画面：
+http://localhost/login
+
+ユーザー登録画面
+http://localhost/register
+
+
+## 管理画面ログインテスト用ユーザー
+メールアドレス:
+test@example.com
+パスワード:
+password
 
 ## 作成者
 松岡奈津紀
